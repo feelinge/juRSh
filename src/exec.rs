@@ -63,7 +63,7 @@ pub fn evaluate(prog: &Program, bank: &mut [u8; 256]) -> Result<(), Box<error::E
     Ok(())
 }
 
-pub fn as_callable<'a, T>(prog: Program) -> Box<Fn(T) -> [u8; 256]>
+pub fn as_callable<'a, T>(prog: Program) -> Box<Fn(T) -> Result<[u8; 256], Box<error::Error>>>
     where T: IntoIterator<Item = u8>
 {
     let prog = Box::new(prog);
@@ -72,7 +72,7 @@ pub fn as_callable<'a, T>(prog: Program) -> Box<Fn(T) -> [u8; 256]>
         for (idx, byte) in b.into_iter().enumerate() {
             bank[idx] = byte.clone();
         }
-        evaluate(&*prog, &mut bank);
-        bank
+        evaluate(&*prog, &mut bank)?;
+        Ok(bank)
     })
 }
