@@ -1,0 +1,6 @@
+[package]
+name = "joshscript-rs"
+version = "0.1.0"
+authors = ["Evan Walter <feelingelately@gmail.com>"]
+
+[dependencies]
